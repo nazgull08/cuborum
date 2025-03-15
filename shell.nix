@@ -31,11 +31,11 @@ pkgs.mkShell {
     export WGPU_BACKEND=VULKAN
     # Отключаем принудительный софтварный fallback
     export WGPU_FORCE_FALLBACK_ADAPTER=0
-    # Пишем трассы в wgpu-trace
-    export WGPU_TRACE=1
+    export WGPU_TRACE=0
 
     # Пробуем логи отладочного уровня (можно уменьшить при шуме):
-    export RUST_LOG=wgpu=trace,wgpu_hal=trace,info
+    #export RUST_LOG=wgpu=trace,wgpu_hal=trace,info
+    export RUST_LOG=info
 
     # Если нужно, добавляем libxkbcommon в LD_LIBRARY_PATH
     export LD_LIBRARY_PATH="${pkgs.libxkbcommon}/lib:$LD_LIBRARY_PATH"

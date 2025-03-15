@@ -2,6 +2,7 @@ use wgpu::{Device, RenderPipeline, ShaderModule, SurfaceConfiguration, VertexSta
 use wgpu::util::DeviceExt;
 use std::fs;
 
+use crate::renderer::vertex::Vertex; // Импортируем новую структуру Vertex
 
 fn load_shader(device: &Device, path: &str, label: &str) -> ShaderModule {
     let shader_src = fs::read_to_string(path).expect(&format!("Failed to read shader file: {}", path));
@@ -10,7 +11,6 @@ fn load_shader(device: &Device, path: &str, label: &str) -> ShaderModule {
         source: wgpu::ShaderSource::Wgsl(shader_src.into()),
     })
 }
-
 
 pub fn create_pipeline(device: &Device, surface_format: wgpu::TextureFormat) -> RenderPipeline {
     let vertex_shader = load_shader(device, "shaders/vertex.wgsl", "Vertex Shader");
@@ -23,15 +23,9 @@ pub fn create_pipeline(device: &Device, surface_format: wgpu::TextureFormat) -> 
     });
 
     let vertex_buffer_layout = wgpu::VertexBufferLayout {
-        array_stride: std::mem::size_of::<[f32; 3]>() as wgpu::BufferAddress,
+        array_stride: std::mem::size_of::<Vertex>() as wgpu::BufferAddress, // Теперь stride = Vertex
         step_mode: wgpu::VertexStepMode::Vertex,
-        attributes: &[
-            wgpu::VertexAttribute {
-                offset: 0,
-                shader_location: 0, 
-                format: wgpu::VertexFormat::Float32x3,
-            },
-        ],
+        attributes: &Vertex::ATTRIBS, // Используем атрибуты из Vertex
     };
 
     device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
