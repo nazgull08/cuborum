@@ -45,6 +45,7 @@ impl ApplicationHandler for App {
                     event_loop.exit();
                 }
                 WindowEvent::RedrawRequested => {
+                    state.update(); // ✅ Теперь обновляем камеру перед рендерингом
                     state.render();
                     state.get_window().request_redraw();
                 }
